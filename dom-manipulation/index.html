@@ -1,56 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dynamic Quote Generator</title>
-  <style>
-    body { font-family: Arial, sans-serif; padding: 20px; }
-    #quoteDisplay { margin: 20px 0; font-size: 1.5em; }
-  </style>
-</head>
-<body>
-  <h1>Dynamic Quote Generator</h1>
-  <div id="quoteDisplay"></div>
-  <button id="newQuote">Show New Quote</button>
+// Array of quote objects
+const quotes = [
+  { text: "The best way to get started is to quit talking and begin doing.", category: "Motivation" },
+  { text: "Success is not the key to happiness. Happiness is the key to success.", category: "Happiness" },
+  { text: "Don’t watch the clock; do what it does. Keep going.", category: "Productivity" },
+  { text: "Dream big and dare to fail.", category: "Inspiration" }
+];
 
-  <div>
-    <input id="newQuoteText" type="text" placeholder="Enter a new quote" />
-    <input id="newQuoteCategory" type="text" placeholder="Enter quote category" />
-    <button onclick="addQuote()">Add Quote</button>
-  </div>
+// DOM references
+const quoteDisplay = document.getElementById("quoteDisplay");
+const newQuoteBtn = document.getElementById("newQuote");
 
-  <script>
-    const quotes = [
-      { text: "The journey of a thousand miles begins with one step.", category: "Motivation" },
-      { text: "Life is what happens when you're busy making other plans.", category: "Life" },
-      { text: "Be yourself; everyone else is already taken.", category: "Inspiration" }
-    ];
+// Display a random quote
+function showRandomQuote() {
+  const randomIndex = Math.floor(Math.random() * quotes.length);
+  const quote = quotes[randomIndex];
+  quoteDisplay.innerHTML = `
+    <p>"${quote.text}"</p>
+    <small><em>Category: ${quote.category}</em></small>
+  `;
+}
 
-    const quoteDisplay = document.getElementById("quoteDisplay");
-    const newQuoteBtn = document.getElementById("newQuote");
+// Add a new quote from user input
+function addQuote() {
+  const quoteText = document.getElementById("newQuoteText").value.trim();
+  const quoteCategory = document.getElementById("newQuoteCategory").value.trim();
 
-    function showRandomQuote() {
-      const randomIndex = Math.floor(Math.random() * quotes.length);
-      const quote = quotes[randomIndex];
-      quoteDisplay.textContent = `${quote.text} — (${quote.category})`;
-    }
+  if (quoteText && quoteCategory) {
+    quotes.push({ text: quoteText, category: quoteCategory });
+    showRandomQuote(); // Optionally show the new quote
+    alert("Quote added successfully!");
 
-    function addQuote() {
-      const text = document.getElementById("newQuoteText").value.trim();
-      const category = document.getElementById("newQuoteCategory").value.trim();
+    // Clear inputs
+    document.getElementById("newQuoteText").value = "";
+    document.getElementById("newQuoteCategory").value = "";
+  } else {
+    alert("Please fill in both fields.");
+  }
+}
 
-      if (text && category) {
-        quotes.push({ text, category });
-        document.getElementById("newQuoteText").value = "";
-        document.getElementById("newQuoteCategory").value = "";
-        alert("Quote added successfully!");
-      } else {
-        alert("Please fill in both fields.");
-      }
-    }
+// Event listener for "Show New Quote"
+newQuoteBtn.addEventListener("click", showRandomQuote);
 
-    newQuoteBtn.addEventListener("click", showRandomQuote);
-  </script>
-</body>
-</html>
+// Show one quote on page load
+showRandomQuote();
