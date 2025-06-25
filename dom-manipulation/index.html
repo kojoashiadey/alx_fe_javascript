@@ -1,156 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quote Generator</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        .quote-container {
-            border: 1px solid #ddd;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-radius: 5px;
-        }
-        .quote-text {
-            font-size: 1.2em;
-            margin-bottom: 10px;
-        }
-        .quote-category {
-            color: #666;
-            font-style: italic;
-        }
-        button {
-            padding: 8px 15px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-right: 10px;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-        }
-        input, textarea, select {
-            width: 100%;
-            padding: 8px;
-            box-sizing: border-box;
-        }
-        nav {
-            margin-bottom: 30px;
-        }
-        nav a {
-            margin-right: 15px;
-            text-decoration: none;
-            color: #333;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dynamic Quote Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    #quoteDisplay {
+      margin: 20px 0;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      min-height: 100px;
+    }
+    button {
+      padding: 8px 16px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin: 5px;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    input {
+      padding: 8px;
+      margin: 5px;
+      width: 300px;
+    }
+    .category-selector {
+      margin: 15px 0;
+    }
+    .category-btn {
+      background-color: #008CBA;
+    }
+    .active-category {
+      background-color: #005f7a;
+    }
+  </style>
 </head>
 <body>
-    <nav>
-        <a href="#">Home</a>
-        <a href="#">Projects</a>
-        <a href="#">Curriculums</a>
-        <a href="#">Sandboxes</a>
-    </nav>
+  <h1>Dynamic Quote Generator</h1>
+  
+  <div class="category-selector" id="categoryButtons"></div>
+  
+  <div id="quoteDisplay"></div>
+  
+  <button id="newQuote">Show New Quote</button>
+  
+  <div id="addQuoteForm">
+    <h3>Add New Quote</h3>
+    <input id="newQuoteText" type="text" placeholder="Enter a new quote" />
+    <input id="newQuoteCategory" type="text" placeholder="Enter quote category" />
+    <button onclick="addQuote()">Add Quote</button>
+  </div>
 
-    <h1>Quote Generator</h1>
-    
-    <div class="quote-container">
-        <p class="quote-text" id="quote-text">Click the button to show a random quote!</p>
-        <p class="quote-category" id="quote-category"></p>
-        <button id="new-quote-btn">Show New Quote</button>
-    </div>
-
-    <div class="add-quote-form">
-        <h2>Add a New Quote</h2>
-        <div class="form-group">
-            <label for="quote">Quote Text:</label>
-            <textarea id="quote" rows="3" required></textarea>
-        </div>
-        <div class="form-group">
-            <label for="category">Category:</label>
-            <input type="text" id="category" required>
-        </div>
-        <button id="add-quote-btn">Add Quote</button>
-    </div>
-
-    <script>
-        // Initialize quotes array from localStorage or use default quotes
-        let quotes = JSON.parse(localStorage.getItem('quotes')) || [
-            { text: "The only way to do great work is to love what you do.", category: "Inspiration" },
-            { text: "Innovation distinguishes between a leader and a follower.", category: "Leadership" },
-            { text: "Stay hungry, stay foolish.", category: "Motivation" }
-        ];
-
-        // DOM elements
-        const quoteTextElement = document.getElementById('quote-text');
-        const quoteCategoryElement = document.getElementById('quote-category');
-        const newQuoteBtn = document.getElementById('new-quote-btn');
-        const addQuoteBtn = document.getElementById('add-quote-btn');
-        const quoteInput = document.getElementById('quote');
-        const categoryInput = document.getElementById('category');
-
-        // Display a random quote
-        function displayRandomQuote() {
-            if (quotes.length === 0) {
-                quoteTextElement.textContent = "No quotes available. Add some quotes!";
-                quoteCategoryElement.textContent = "";
-                return;
-            }
-
-            const randomIndex = Math.floor(Math.random() * quotes.length);
-            const randomQuote = quotes[randomIndex];
-            
-            quoteTextElement.textContent = `"${randomQuote.text}"`;
-            quoteCategoryElement.textContent = `- ${randomQuote.category}`;
-        }
-
-        // Add a new quote
-        function addQuote() {
-            const text = quoteInput.value.trim();
-            const category = categoryInput.value.trim();
-
-            if (text && category) {
-                const newQuote = { text, category };
-                quotes.push(newQuote);
-                
-                // Save to localStorage
-                localStorage.setItem('quotes', JSON.stringify(quotes));
-                
-                // Clear inputs
-                quoteInput.value = '';
-                categoryInput.value = '';
-                
-                // Display the new quote
-                quoteTextElement.textContent = `"${text}"`;
-                quoteCategoryElement.textContent = `- ${category}`;
-                
-                alert('Quote added successfully!');
-            } else {
-                alert('Please enter both quote text and category.');
-            }
-        }
-
-        // Event listeners
-        newQuoteBtn.addEventListener('click', displayRandomQuote);
-        addQuoteBtn.addEventListener('click', addQuote);
-
-        // Display a random quote on page load
-        displayRandomQuote();
-    </script>
+  <script src="script.js"></script>
 </body>
 </html>
