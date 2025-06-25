@@ -19,17 +19,17 @@ const categoryButtons = document.getElementById('categoryButtons');
 // Initialize the app
 document.addEventListener('DOMContentLoaded', function() {
   // Display first quote
-  showRandomQuote();
+  displayRandomQuote();
   
   // Set up event listeners
-  newQuoteBtn.addEventListener('click', showRandomQuote);
+  newQuoteBtn.addEventListener('click', displayRandomQuote);
   
   // Create category buttons
   createCategoryButtons();
 });
 
 // Function to display a random quote
-function showRandomQuote() {
+function displayRandomQuote() {
   let filteredQuotes = quotes;
   
   if (currentCategory !== 'all') {
